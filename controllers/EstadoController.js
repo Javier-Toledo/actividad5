@@ -1,4 +1,5 @@
 const Estado = require('../models/Estado');
+const Municipio = require('../models/Municipio');
 
 // agregar Estado
 exports.agregar = async (req, res, next) => {
@@ -30,7 +31,12 @@ exports.listar = async (req, res, next) => {
 exports.mostrar = async (req, res, next) => {
   try {
     // buscar el registro, por id
-    const estado = await Estado.findByPk(req.params.id, {});
+    const estado = await Estado.findByPk(req.params.id, {
+      // Ver municipos de un estado
+      include: [
+        { model: Municipio },
+      ]
+  });
     if (!estado) {
       res.status(404).json({ mensaje: 'No se encontró el estado.'});
     } else {
